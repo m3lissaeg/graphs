@@ -1,64 +1,23 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout
-from PyQt5.QtCore import Qt, QPoint, QRect
-from PyQt5.QtGui import QPixmap, QPainter
+import pygame, sys
+from pygame.locals import *
+pygame.init()
+
+pywindow = pygame.display.set_mode((500, 500))
+pygame.display.set_caption('Draw Nodes for the graph')
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
+pywindow.fill(WHITE)
 
 
-
-class MyApp(QWidget):
-	def __init__(self):
-		super().__init__()
-		self.window_width, self.window_height = 1200, 800
-		self.setMinimumSize(self.window_width, self.window_height)
-
-		layout = QVBoxLayout()
-		self.setLayout(layout)
-
-		self.pix = QPixmap(self.rect().size())
-		self.pix.fill(Qt.white)
-
-		self.begin = QPoint()
-
-	def paintEvent(self, event):
-		painter = QPainter(self)
-		painter.drawPixmap(QPoint(), self.pix)
-
-		if not self.begin.isNull():
-			ellipse = QRect(self.begin, self.begin)
-      print('hello')
-			painter.drawEllipse(ellipse.normalized())
-
-	def mousePressEvent(self, event):
-		if event.buttons() & Qt.LeftButton:
-			print(self.begin)
-			self.begin = event.pos()
-			self.update()
-
-	def mouseReleaseEvent(self, event):
-		print('Point 3')
-		if event.button() & Qt.LeftButton:
-			ellipse = QRect(self.begin, self.begin)
-			painter = QPainter(self.pix)
-			painter.drawEllipse(ellipse.normalized())
-
-			self.begin = QPoint()
-			self.update()
 
 if __name__ == '__main__':
-	# don't auto scale when drag app to a different monitor.
-	# QApplication.setAttribute(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+	while True: #main game loop
+			for event in pygame.event.get():
+					if event.type == pygame.MOUSEBUTTONDOWN: #This checks for the mouse press event
+							circ = pygame.mouse.get_pos() #Gets the mouse position
+							pygame.draw.circle(pywindow, BLUE, (circ), 30, 1) #Draws a circle at the mouse position!
+					if event.type == QUIT:
+							pygame.quit()
+							sys.exit()
+			pygame.display.update()
 	
-	app = QApplication(sys.argv)
-	app.setStyleSheet('''
-		QWidget {
-			font-size: 30px;
-		}
-	''')
-	
-	myApp = MyApp()
-	myApp.show()
-
-	try:
-		sys.exit(app.exec_())
-	except SystemExit:
-		print('Closing Window...')
