@@ -10,8 +10,10 @@ pywindow = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Draw Nodes for the graph')
 font = pygame.font.Font('freesansbold.ttf', 32)
 img = pygame.image.load('graph.png')
+imgMenu = pygame.image.load('graphMenu.png')
+imgLine = pygame.image.load('line.png')
 
-WHITE = (255, 255, 255)
+WHITE = (255, 250, 239)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 DIAMETER = 30
@@ -21,6 +23,7 @@ listOfNodes = []
 listOfEdges = []
 rightClickStack = []
 currentName = [0]
+digraph = False # is undirected by default
 
 def nameGenerator():
 	# currentName +=1
@@ -60,8 +63,47 @@ class Edge(object):
 
 
 if __name__ == '__main__':
-	pywindow.blit(img, (0,0))
+
+	stop = True
+	while stop:
+		#Menu to select digraphs and undirected graphs
+		for event in pygame.event.get():
+			pywindow.blit(imgMenu, (50,50))	
+
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				position = pygame.mouse.get_pos() #Gets the mouse position
+
+				if event.button == 1:
+					if (position[0] > 130 and position[0] < 320 and
+									position[1] > 500 and position[1] < 550):
+									# Digraph
+									print(position)
+									digraph = True
+									#draw line under the selected option to show is selected
+									imgMenu = pygame.image.load('graphMenuDigraph.png')
+
+
+					elif (position[0] > 530 and position[0] < 720 and
+									position[1] > 500 and position[1] < 550):
+									#Undirected
+									print(position)
+									digraph = False
+									#draw line under the selected option to show is selected
+									imgMenu = pygame.image.load('graphMenuUndirected.png')
+
+
+
+				
+			
+			if event.type == QUIT:
+										pygame.quit()
+										sys.exit()
+		pygame.display.update()
+
+
 	while True: #main game loop
+			pywindow.blit(img, (0,0))
+
 			for event in pygame.event.get():
 					#Checks for the mouse press event
 					if event.type == pygame.MOUSEBUTTONDOWN: 
