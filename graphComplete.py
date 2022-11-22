@@ -81,7 +81,7 @@ if __name__ == '__main__':
 									digraph = True
 									#draw line under the selected option to show is selected
 									imgMenu = pygame.image.load('graphMenuDigraph.png')
-
+									stop = False
 
 					elif (position[0] > 530 and position[0] < 720 and
 									position[1] > 500 and position[1] < 550):
@@ -90,9 +90,7 @@ if __name__ == '__main__':
 									digraph = False
 									#draw line under the selected option to show is selected
 									imgMenu = pygame.image.load('graphMenuUndirected.png')
-
-
-
+									stop = False
 				
 			
 			if event.type == QUIT:
@@ -100,7 +98,7 @@ if __name__ == '__main__':
 										sys.exit()
 		pygame.display.update()
 
-
+	pywindow.fill(WHITE)
 	while True: #main game loop
 			pywindow.blit(img, (0,0))
 
